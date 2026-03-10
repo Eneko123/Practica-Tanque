@@ -17,10 +17,10 @@ public class TankMove : MonoBehaviour
 
     void FixedUpdate() // FixedUpdate para física
     {
-        Move();
+        MoverTanque();
     }
 
-    void Move()
+    void MoverTanque()
     {
         if (Input.GetKey(KeyCode.W))
         {
