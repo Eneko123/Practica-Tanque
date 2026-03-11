@@ -4,48 +4,34 @@ using System.Collections.Generic;
 
 public class Bala : MonoBehaviour
 {
-    public GameObject bala;
-    public List<GameObject> poolBalas;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Rigidbody rb;
+    public float liveTime = 3f; // Tiempo de vida de la bala en segundos
+    public float liveTimeMax = 3f; // Tiempo de vida de la bala en segundos
+
+
     void Start()
     {
-        AddBalaToPool(5);
+            rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        Life();
     }
 
-    void AddBalaToPool(int amount)
+    void Shoot()
+    {         
+        rb.AddForce(transform.forward * 100f, ForceMode.Impulse);
+    }
+
+    void Life()
     {
-        for (int i = 0; i < amount; i++)
+        liveTime -= Time.deltaTime;
+        if (liveTime <= 0)
         {
-            GameObject Bala = Instantiate(bala);
-            Bala.SetActive(false);
-            poolBalas.Add(Bala);
+            this.gameObject.SetActive(false);
+            this.GetComponent<Rigidbody>().linearVelocity = Vector3.zero; // Reiniciar la velocidad para evitar acumulacion
+            liveTime = liveTimeMax; // Reiniciar el tiempo de vida para la proxima vez que se active
         }
-    }
-
-    void Disparar()
-    {
-        // Buscar uno inactivo en el pool
-        GameObject Bala = poolBalas.Find(e => !e.activeSelf);
-
-        // Si no hay, expandir el pool
-        if (Bala == null)
-        {
-            AddBalaToPool(1);
-            Bala = poolBalas[poolBalas.Count - 1];
-        }
-
-        Bala.transform.position = this.transform.position;
-        Bala.SetActive(true);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        this.gameObject.SetActive(false);
     }
 }
