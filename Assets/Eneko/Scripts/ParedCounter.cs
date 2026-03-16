@@ -7,22 +7,40 @@ public class ParedCounter : MonoBehaviour
     public GameObject victoria;
     public GameObject counter;
     public GameObject[] paredes;
+
     public int contadorParedes = 0;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private bool juegoTerminado = false;
+
     void Start()
     {
+        victoria.SetActive(false);
 
+        ActualizarContador();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        counter.GetComponent<TextMeshPro>().text = contadorParedes + "/10";
-        ToString();
-        if (contadorParedes == paredes.Length)
+        if (!juegoTerminado && contadorParedes >= paredes.Length)
         {
-            victoria.gameObject.SetActive(true);
-            Debug.Log("¡Todas las paredes han sido destruidas!");
+            MostrarVictoria();
         }
+    }
+
+    public void ParedDestruida()
+    {
+        contadorParedes++;
+        ActualizarContador();
+    }
+
+    private void ActualizarContador()
+    {
+        counter.GetComponent<TMP_Text>().text = contadorParedes + " / " + paredes.Length;
+    }
+
+    private void MostrarVictoria()
+    {
+        juegoTerminado = true;
+        victoria.SetActive(true);
+        Debug.Log("¡Todas las paredes han sido destruidas!");
     }
 }

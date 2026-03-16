@@ -8,9 +8,8 @@ public class Pared : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Bala"))
         {
-            paredCounter.contadorParedes++;
-            Debug.Log("Pared destruida. Total: " + paredCounter.contadorParedes);
-            Destroy(this.gameObject);
+            paredCounter.ParedDestruida();
+            Destroy(gameObject);
         }
     }
 
